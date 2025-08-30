@@ -8,9 +8,9 @@ const Main = () => {
 
   const { onSent, recentPrompt, showResult, loading, resultData, setInput, input } = useContext(Context)
 
-  const handleCardClick = (promptText) => {
-    onSent(promptText);
-  }
+  // const handleCardClick = (promptText) => {
+  //   onSent(promptText);
+  // }
 
   const handleSend = () => {
     if (input.trim()) {
@@ -40,25 +40,25 @@ const Main = () => {
             </div>
 
             <div className="cards">
-              <div className="card" onClick={() => handleCardClick("Suggest beautiful places to see on an upcoming road trip")}>
+              {/* <div className="card" onClick={() => handleCardClick("Suggest beautiful places to see on an upcoming road trip")}>
                 <p>Suggest beautiful places to see on an upcoming road trip</p>
                 <img src={assets.compass_icon} alt="compass" />
-              </div>
+              </div> */}
 
-              <div className="card" onClick={() => handleCardClick("Briefly summarize this concept: urban planning")}>
+              {/* <div className="card" onClick={() => handleCardClick("Briefly summarize this concept: urban planning")}>
                 <p>Briefly summarize this concept: urban planning</p>
                 <img src={assets.bulb_icon} alt="bulb" />
-              </div>
+              </div> */}
 
-              <div className="card" onClick={() => handleCardClick("Brainstorm team bonding activities for our work retreat")}>
+              {/* <div className="card" onClick={() => handleCardClick("Brainstorm team bonding activities for our work retreat")}>
                 <p>Brainstorm team bonding activities for our work retreat</p>
                 <img src={assets.message_icon} alt="message" />
-              </div>
+              </div> */}
 
-              <div className="card" onClick={() => handleCardClick("Improve the readability of the following code")}>
+              {/* <div className="card" onClick={() => handleCardClick("Improve the readability of the following code")}>
                 <p>Improve the readability of the following code</p>
                 <img src={assets.code_icon} alt="code" />
-              </div>
+              </div> */}
             </div>
           </>
         ) : (
