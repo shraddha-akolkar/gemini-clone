@@ -1,13 +1,12 @@
-/* src/components/Main/Main.css */
-
 .main {
-    flex: 1;
-    min-height: 100vh;
-    padding-bottom: 15vh;
-    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    width: 100%;
     background-color: #ffffff;
 }
 
+/* Navigation */
 .main .nav {
     display: flex;
     align-items: center;
@@ -15,6 +14,7 @@
     font-size: 22px;
     padding: 20px;
     color: #585858;
+    border-bottom: 1px solid #eee;
 }
 
 .main .nav img {
@@ -22,12 +22,16 @@
     border-radius: 50%;
 }
 
+/* Main scrollable content */
 .main-container {
+    flex: 1;
     max-width: 900px;
     margin: auto;
     padding: 0 20px;
+    overflow-y: auto;
 }
 
+/* Greeting Section */
 .main .greet {
     margin: 50px 0;
     font-size: 56px;
@@ -38,7 +42,6 @@
 }
 
 .main .greet span {
-    background: -webkit-linear-gradient(16deg, #4b90ff, #ff5546);
     background: linear-gradient(16deg, #4b90ff, #ff5546);
     background-clip: text;
     -webkit-background-clip: text;
@@ -46,6 +49,7 @@
     -webkit-text-fill-color: transparent;
 }
 
+/* Cards Section */
 .main .cards {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
@@ -85,18 +89,18 @@
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
+/* Bottom Input Section (fixed at bottom) */
 .main-bottom {
-    position: absolute;
+    border-top: 1px solid #eee;
+    padding: 15px 20px;
+    background: #fff;
+    position: sticky;
     bottom: 0;
-    width: 100%;
     max-width: 900px;
-    padding: 0px 20px;
     margin: auto;
-    margin-bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
 }
 
+/* Search Bar */
 .search {
     display: flex;
     align-items: center;
@@ -140,18 +144,18 @@
 
 .main .bottom-info {
     font-size: 13px;
-    margin: 15px auto;
+    margin-top: 10px;
     text-align: center;
     font-weight: 300;
     color: #65676b;
 }
 
-/* Result Display Styles */
+/* Result Display */
 .main .result {
     padding: 0px 5%;
     max-height: 70vh;
-    overflow-y: scroll;
-    margin-bottom: 15vh;
+    overflow-y: auto;
+    margin-bottom: 20px;
 }
 
 .main .result::-webkit-scrollbar {
@@ -195,6 +199,7 @@
     font-weight: 300;
     line-height: 1.8;
     color: #333;
+    white-space: pre-wrap; /* keep formatting */
 }
 
 /* Loading Animation */
@@ -218,15 +223,11 @@
 }
 
 @keyframes loader {
-    0% {
-        background-position: -800px 0px;
-    }
-    100% {
-        background-position: 800px 0px;
-    }
+    0% { background-position: -800px 0px; }
+    100% { background-position: 800px 0px; }
 }
 
-/* Responsive Design */
+/* Responsive */
 @media (max-width: 768px) {
     .main .greet {
         font-size: 28px;
@@ -243,7 +244,7 @@
     }
     
     .main-bottom {
-        padding: 0 10px;
+        padding: 10px;
     }
     
     .main .nav {
