@@ -1,5 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&family=Playfair:ital,opsz,wght@0,5..1200,300..900;1,5..1200,300..900&family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
 
+@import "tailwindcss";
+
 *{
   padding: 0;
   margin: 0;
@@ -7,8 +9,47 @@
   font-family: Outfit;
 }
 
-#root{
-  min-height: 100vh;
-  display: flex;
+body {
+  background-color: #ffffff;
+  overflow-x: hidden;
+}
 
+#root{
+  width: 100vw;
+  height: 100vh;
+}
+
+/* Scrollbar Styling for the entire app */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+/* Custom selection colors */
+::selection {
+  background-color: #4285f4;
+  color: white;
+}
+
+::-moz-selection {
+  background-color: #4285f4;
+  color: white;
+}
+
+/* Animation for loader */
+@keyframes loader {
+  0% { background-position: -800px 0px; }
+  100% { background-position: 800px 0px; }
 }
