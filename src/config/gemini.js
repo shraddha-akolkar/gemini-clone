@@ -2,25 +2,31 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 // ✅ Use your Gemini API key
-const API_KEY = "AIzaSyB1PVbo3kC7HJXkD_jQ2zKftWCQogiQ9rM";
+// src/config/gemini.js
+const API_KEY = "AIzaSyDiEA_6vyVVosqnj8B_C90nTmvJhnQAibU";
 
-// Initialize Gemini client
-const genAI = new GoogleGenerativeAI(API_KEY);
-
-// Function to get a response from Gemini
 export async function getGeminiResponse(prompt) {
   try {
-    // ✅ Use the correct model
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${API_KEY}`;
+    const response = await fetch(endpoint, {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({
+        contents: [
+          { parts: [{ text: prompt }] }
+        ],
+      })
+    });
 
-    // Generate content
-    const result = await model.generateContent(prompt);
-    const response = await result.response;
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
 
-    // Return the text output
-    return response.text();
+    const data = await response.json();
+    return data?.candidates?.[0]?.content?.parts?.[0]?.text 
+           || "⚠️ No answer returned";
   } catch (error) {
     console.error("Gemini API Error:", error);
-    return "⚠️ Error fetching response from Gemini.";
+    return "⚠️ Error fetching response from Gemini";
   }
 }
