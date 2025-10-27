@@ -12,6 +12,7 @@ const Main = () => {
     resultData,
     setInput,
     input,
+    currentConversation,
   } = useContext(Context);
 
   // const handleCardClick = (promptText) => {
@@ -38,7 +39,8 @@ const Main = () => {
       </div>
 
       <div className="flex-1 max-w-[900px] mx-auto p-0 px-5 overflow-y-auto">
-        {!showResult ? (
+        {!showResult &&
+        (!currentConversation || currentConversation.messages.length === 0) ? (
           <>
             <div className="my-[50px] text-[56px] text-[#c4c7c5] font-medium p-5 text-center max-md:text-[28px] max-md:my-5">
               <p>
@@ -55,35 +57,69 @@ const Main = () => {
           </>
         ) : (
           <div className="p-0 px-[5%] max-h-[70vh] overflow-y-auto mb-5 [scrollbar-width:none] [-ms-overflow-style:none]">
-            <div className="my-[40px] flex items-center gap-5">
-              <img
-                src={assets.user_icon}
-                alt="user"
-                className="w-10 rounded-full"
-              />
-              <p className="text-[17px] font-normal text-[#424242] leading-[1.5]">
-                {recentPrompt}
-              </p>
-            </div>
-            <div className="flex items-start gap-5 mb-5">
-              <img
-                src={assets.gemini_icon}
-                alt="gemini"
-                className="w-10 rounded-full mt-[5px]"
-              />
-              {loading ? (
-                <div className="w-full flex flex-col gap-[10px]">
-                  <hr className="rounded-sm border-none bg-gradient-to-r from-[#9ed7ff] from-[-800px] via-white to-[#9ed7ff] bg-[length:800px_50px] h-5 animate-[loader_3s_infinite_linear]" />
-                  <hr className="rounded-sm border-none bg-gradient-to-r from-[#9ed7ff] from-[-800px] via-white to-[#9ed7ff] bg-[length:800px_50px] h-5 animate-[loader_3s_infinite_linear]" />
-                  <hr className="rounded-sm border-none bg-gradient-to-r from-[#9ed7ff] from-[-800px] via-white to-[#9ed7ff] bg-[length:800px_50px] h-5 animate-[loader_3s_infinite_linear]" />
+            {/* Display all saved messages from the conversation */}
+            {currentConversation?.messages?.map((message, index) => (
+              <div key={index}>
+                <div className="my-[40px] flex items-center gap-5">
+                  <img
+                    src={assets.user_icon}
+                    alt="user"
+                    className="w-10 rounded-full"
+                  />
+                  <p className="text-[17px] font-normal text-[#424242] leading-[1.5]">
+                    {message.prompt}
+                  </p>
                 </div>
-              ) : (
-                <p
-                  className="text-[17px] font-light leading-[1.8] text-[#333] whitespace-pre-wrap"
-                  dangerouslySetInnerHTML={{ __html: resultData }}
-                ></p>
-              )}
-            </div>
+                <div className="flex items-start gap-5 mb-5">
+                  <img
+                    src={assets.gemini_icon}
+                    alt="gemini"
+                    className="w-10 rounded-full mt-[5px]"
+                  />
+                  <p
+                    className="text-[17px] font-light leading-[1.8] text-[#333] whitespace-pre-wrap"
+                    dangerouslySetInnerHTML={{ __html: message.response }}
+                  ></p>
+                </div>
+              </div>
+            ))}
+
+            {/* Show current prompt and response when sending new message */}
+            {recentPrompt && (
+              <>
+                <div className="my-[40px] flex items-center gap-5">
+                  <img
+                    src={assets.user_icon}
+                    alt="user"
+                    className="w-10 rounded-full"
+                  />
+                  <p className="text-[17px] font-normal text-[#424242] leading-[1.5]">
+                    {recentPrompt}
+                  </p>
+                </div>
+                <div className="flex items-start gap-5 mb-5">
+                  <img
+                    src={assets.gemini_icon}
+                    alt="gemini"
+                    className="w-10 rounded-full mt-[5px]"
+                  />
+                  {loading ? (
+                    <div className="w-full flex flex-col gap-[10px]">
+                      <hr className="rounded-sm border-none bg-gradient-to-r from-[#9ed7ff] from-[-800px] via-white to-[#9ed7ff] bg-[length:800px_50px] h-5 animate-[loader_3s_infinite_linear]" />
+                      <hr className="rounded-sm border-none bg-gradient-to-r from-[#9ed7ff] from-[-800px] via-white to-[#9ed7ff] bg-[length:800px_50px] h-5 animate-[loader_3s_infinite_linear]" />
+                      <hr className="rounded-sm border-none bg-gradient-to-r from-[#9ed7ff] from-[-800px] via-white to-[#9ed7ff] bg-[length:800px_50px] h-5 animate-[loader_3s_infinite_linear]" />
+                    </div>
+                  ) : (
+                    resultData && (
+                      <p
+                        className="text-[17px] font-light leading-[1.8] text-[#333] whitespace-pre-wrap"
+                        dangerouslySetInnerHTML={{ __html: resultData }}
+                      ></p>
+                    )
+                  )}
+                </div>
+              </>
+            )}
           </div>
         )}
       </div>

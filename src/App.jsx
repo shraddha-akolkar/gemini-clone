@@ -7,10 +7,10 @@ const App = () => {
   return (
     <ContextProvider>
       <div className="flex w-full h-screen max-md:flex-row">
-        <div className="min-w-[250px] max-w-[250px] flex-shrink-0 max-md:min-w-[60px] max-md:max-w-[60px]">
+        <div className="min-w-[280px] max-w-[280px] flex-shrink-0 max-md:min-w-[72px] max-md:max-w-[72px]">
           <Sidebar />
         </div>
-        <div className="flex-1 w-[calc(100vw-250px)] max-md:w-[calc(100vw-60px)] overflow-x-hidden">
+        <div className="flex-1 w-[calc(100vw-280px)] max-md:w-[calc(100vw-72px)] overflow-x-hidden">
           <Main />
         </div>
       </div>
