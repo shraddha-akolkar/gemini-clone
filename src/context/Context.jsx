@@ -1,10 +1,10 @@
 // src/context/Context.jsx
-import { createContext, useState } from "react";
-import { getGeminiResponse } from "../config/gemini";  // ✅ correct import
+import React, { createContext, useState } from "react";
+import { getGeminiResponse } from "../config/gemini";
 
 export const Context = createContext();
 
-const ContextProvider = (props) => {
+const ContextProvider = ({ children }) => {
   const [input, setInput] = useState("");
   const [recentPrompt, setRecentPrompt] = useState("");
   const [prevPrompts, setPrevPrompts] = useState([]);
@@ -15,72 +15,56 @@ const ContextProvider = (props) => {
   const delayPara = (index, nextWord) => {
     setTimeout(function () {
       setResultData((prev) => prev + nextWord);
-    }, 75 * index);
+    }, 50 * index);
   };
 
   const newChat = () => {
-    setLoading(false);
     setShowResult(false);
+    setLoading(false);
     setInput("");
     setResultData("");
   };
 
   const onSent = async (prompt) => {
-    setResultData("");
-    setLoading(true);
     setShowResult(true);
+    setLoading(true);
+    setResultData("");
 
-    let response;
+    let finalPrompt = prompt || input;
+    setRecentPrompt(finalPrompt);
 
-    if (prompt !== undefined) {
-      response = await getGeminiResponse(prompt);   // ✅ fixed
-      setRecentPrompt(prompt);
-    } else {
-      setPrevPrompts((prev) => [...prev, input]);
-      setRecentPrompt(input);
-      response = await getGeminiResponse(input);    // ✅ fixed
+    if (!prompt) {
+      setPrevPrompts((prev) => [...prev, finalPrompt]);
     }
 
-    // Format the response
-    let responseArray = response.split("**");
-    let newResponse = "";
-    for (let i = 0; i < responseArray.length; i++) {
-      if (i === 0 || i % 2 !== 1) {
-        newResponse += responseArray[i];
-      } else {
-        newResponse += "<b>" + responseArray[i] + "</b>";
-      }
-    }
-    let newResponse2 = newResponse.split("*").join("<br/>");
-    let newResponseArray = newResponse2.split(" ");
+    const response = await getGeminiResponse(finalPrompt);
+    let formatted = response.replace(/\n/g, "<br/>");
+    let words = formatted.split(" ");
 
-    // Animate the response
-    for (let i = 0; i < newResponseArray.length; i++) {
-      const nextWord = newResponseArray[i];
-      delayPara(i, nextWord + " ");
+    for (let i = 0; i < words.length; i++) {
+      delayPara(i, words[i] + " ");
     }
 
     setLoading(false);
     setInput("");
   };
 
-  const contextValue = {
-    prevPrompts,
-    setPrevPrompts,
-    onSent,
-    setRecentPrompt,
-    recentPrompt,
-    showResult,
-    loading,
-    resultData,
-    input,
-    setInput,
-    newChat,
-  };
-
   return (
-    <Context.Provider value={contextValue}>
-      {props.children}
+    <Context.Provider
+      value={{
+        onSent,
+        input,
+        setInput,
+        recentPrompt,
+        prevPrompts,
+        showResult,
+        loading,
+        resultData,
+        newChat,
+        setRecentPrompt,
+      }}
+    >
+      {children}
     </Context.Provider>
   );
 };
