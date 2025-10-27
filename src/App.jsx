@@ -4,7 +4,7 @@ import Main from "./components/Main/Main";
 import ContextProvider from "./context/Context";
 
 const App = () => {
-  const [sidebarExtended, setSidebarExtended] = useState(false);
+  const [sidebarExtended, setSidebarExtended] = useState(true);
 
   return (
     <ContextProvider>
