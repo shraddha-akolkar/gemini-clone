@@ -1,4 +1,5 @@
 // src/context/Context.jsx
+/* eslint-disable react-refresh/only-export-components */
 import React, { createContext, useState, useEffect } from "react";
 import { getGeminiResponse } from "../config/gemini";
 
@@ -75,6 +76,7 @@ const ContextProvider = ({ children }) => {
     );
 
     const message = {
+      id: `msg_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
       prompt,
       response,
       timestamp: new Date().toISOString(),
@@ -82,16 +84,19 @@ const ContextProvider = ({ children }) => {
 
     if (chatHistory) {
       // Add to existing conversation
-      const updatedConversations = conversations.map((conv) =>
-        conv.id === currentConversation.id
-          ? { ...conv, messages: [...conv.messages, message] }
-          : conv
-      );
-      setConversations(updatedConversations);
-      setCurrentConversation({
+      // First, update the currentConversation with the new message
+      const updatedCurrentConversation = {
         ...chatHistory,
         messages: [...chatHistory.messages, message],
-      });
+      };
+
+      // Then update both state variables
+      setCurrentConversation(updatedCurrentConversation);
+
+      const updatedConversations = conversations.map((conv) =>
+        conv.id === currentConversation.id ? updatedCurrentConversation : conv
+      );
+      setConversations(updatedConversations);
     } else {
       // Create new conversation
       const newConversation = {
@@ -141,6 +146,9 @@ const ContextProvider = ({ children }) => {
       // Save to localStorage after typing animation completes
       setTimeout(() => {
         saveToLocalStorage(finalPrompt, formatted);
+        // Clear recentPrompt and resultData after saving to prevent duplicate display
+        setRecentPrompt("");
+        setResultData("");
       }, totalDelay);
 
       setLoading(false);
